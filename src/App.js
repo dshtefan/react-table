@@ -3,9 +3,11 @@ import axios from "axios"
 import _ from "lodash"
 
 import Table from "./Table"
+import Spinner from "./spinner/Spinner"
 
 const App = () => {
   const [ loading ] = useState(true)
+  const [ isloading, setIsLoading ] = useState(true)
   const [ data, setData ] = useState([])
   const [ asc, setAsc ] = useState(true)
   const [ currentCol, setCurrentCol ] = useState("id")
@@ -15,7 +17,10 @@ const App = () => {
       "http://www.filltext.com/?rows=32&id={number|1000}&firstName={firstName}&" + 
       "lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&" +
       "address={addressObject}&description={lorem|32}"
-    ).then((res) => setData(_.orderBy(res.data, "id", "asc")))
+    ).then((res) => {
+      setData(_.orderBy(res.data, "id", "asc"))
+      setIsLoading(false)
+    })
   }, [loading])
 
   const selectColumn = (colName) => {
@@ -33,12 +38,13 @@ const App = () => {
 
   return (
     <div>
-      <Table 
+      {isloading ? (<Spinner />) :
+      (<Table 
         data={data} 
         selectColumn={selectColumn} 
         asc={asc}
         currentCol={currentCol}
-      />
+      />)}
     </div>
   )
 }
