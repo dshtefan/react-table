@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from "prop-types"
 
-const Table = ({ data }) => {
+const Table = ({ data, selectColumn }) => {
   return(
     <table className="table">
       <thead className="thead-dark">
         <tr>
-          <th scope="col">id</th>
-          <th scope="col">firstName</th>
-          <th scope="col">lastName</th>
+          <th scope="col" onClick={selectColumn.bind(null, "id")}>id</th>
+          <th scope="col" onClick={selectColumn.bind(null, "firstName")}>firstName</th>
+          <th scope="col" onClick={selectColumn.bind(null, "lastName")}>lastName</th>
           <th scope="col">email</th>
           <th scope="col">phone</th>
         </tr>
@@ -30,7 +30,8 @@ const Table = ({ data }) => {
 }
 
 Table.propTypes = {
-  data: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
+  selectColumn: PropTypes.func.isRequired
 }
 
 export default Table
