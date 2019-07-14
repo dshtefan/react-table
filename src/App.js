@@ -3,25 +3,28 @@ import axios from "axios"
 import _ from "lodash"
 
 import Table from "./Table"
+import Homepage from "./homepage/Homepage"
 import Spinner from "./spinner/Spinner"
 
 const App = () => {
-  const [ loading ] = useState(true)
-  const [ isloading, setIsLoading ] = useState(true)
   const [ data, setData ] = useState([])
   const [ asc, setAsc ] = useState(true)
   const [ currentCol, setCurrentCol ] = useState("id")
+  const [ numberOfRows, setNumberOfRows ] = useState(0)
+  const [ currentComponent, setCurrentComponent ] = useState(`Homepage`)
   
   useEffect(() => {
     axios.get(
-      "http://www.filltext.com/?rows=32&id={number|1000}&firstName={firstName}&" + 
-      "lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&" +
-      "address={addressObject}&description={lorem|32}"
+      `http://www.filltext.com/?rows=${numberOfRows}&delay=1&id={number|1000}&firstName={firstName}&` + 
+      `lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&` +
+      `address={addressObject}&description={lorem|32}`
     ).then((res) => {
       setData(_.orderBy(res.data, "id", "asc"))
-      setIsLoading(false)
+      console.log(res.data)
+      if (numberOfRows !== 0) 
+        setCurrentComponent(`Table`)
     })
-  }, [loading])
+  }, [numberOfRows])
 
   const selectColumn = (colName) => {
     let copyData = [...data]
@@ -35,16 +38,26 @@ const App = () => {
     setCurrentCol(colName)
     setData(_.orderBy(copyData, colName, order === true ? "asc" : "desc"))
   }
-
   return (
-    <div>
-      {isloading ? (<Spinner />) :
-      (<Table 
-        data={data} 
-        selectColumn={selectColumn} 
-        asc={asc}
-        currentCol={currentCol}
-      />)}
+    <div style={{width: "100%", height: "100%"}}>
+      {(() => {
+        switch(currentComponent) {
+          case `Homepage`:
+            return <Homepage 
+            setNumberOfRows={setNumberOfRows}
+            setCurrentComponent={setCurrentComponent}
+            />
+          case `Table`:
+            return <Table 
+              data={data} 
+              selectColumn={selectColumn} 
+              asc={asc}
+              currentCol={currentCol}
+            />
+          default:
+              return <Spinner />
+        }
+      })()}
     </div>
   )
 }
