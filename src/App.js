@@ -15,9 +15,7 @@ const App = () => {
       "http://www.filltext.com/?rows=32&id={number|1000}&firstName={firstName}&" + 
       "lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&" +
       "address={addressObject}&description={lorem|32}"
-    ).then((res) => 
-    setData(_.orderBy(res.data, "id", "asc"))
-    )
+    ).then((res) => setData(_.orderBy(res.data, "id", "asc")))
   }, [loading])
 
   const selectColumn = (colName) => {
@@ -35,7 +33,12 @@ const App = () => {
 
   return (
     <div>
-      <Table data={data} selectColumn={selectColumn} />
+      <Table 
+        data={data} 
+        selectColumn={selectColumn} 
+        asc={asc}
+        currentCol={currentCol}
+      />
     </div>
   )
 }
