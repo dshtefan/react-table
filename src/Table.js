@@ -12,7 +12,10 @@ const Table = ({
 }) => {
   const isAsc = () => asc ? "▲" : "▼" 
   const isSelect = (colName) => colName + (colName === currentCol ? isAsc() : "")
-  const select = (colName) => selectColumn.bind(null, colName)
+  const select = (colName) => {
+    selectColumn(colName)
+    setFirstEl( 0)
+  }
 
   const Next = () => 
     setFirstEl(firstEl + elAmount < data.length ? firstEl + elAmount : firstEl)
@@ -24,9 +27,9 @@ const Table = ({
       <table className="table">
         <thead className="thead-dark">
           <tr>
-            <th scope="col" onClick={select("id")}>{isSelect("id")}</th>
-            <th scope="col" onClick={select("firstName")}>{isSelect("firstName")}</th>
-            <th scope="col" onClick={select("lastName")}>{isSelect("lastName")}</th>
+            <th scope="col" onClick={select.bind(null, "id")}>{isSelect("id")}</th>
+            <th scope="col" onClick={select.bind(null, "firstName")}>{isSelect("firstName")}</th>
+            <th scope="col" onClick={select.bind(null, "lastName")}>{isSelect("lastName")}</th>
             <th scope="col">email</th>
             <th scope="col">phone</th>
           </tr>
