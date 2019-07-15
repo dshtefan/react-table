@@ -7,13 +7,20 @@ import Homepage from "./homepage/Homepage"
 import Spinner from "./spinner/Spinner"
 
 const App = () => {
-  const [ data, setData ] = useState([])
-  const [ asc, setAsc ] = useState(true)
-  const [ currentCol, setCurrentCol ] = useState("id")
-  const [ numberOfRows, setNumberOfRows ] = useState(0)
-  const [ currentComponent, setCurrentComponent ] = useState(`Homepage`)
-  const [ firstElement, setFirstElement ] = useState(0)
-  
+  const [ data, setData ] = useState([]) //Данные для отображения
+  const [ asc, setAsc ] = useState(true) //Вид сортировки
+  const [ currentCol, setCurrentCol ] = useState("id") //Текущая колонка
+  const [ numberOfRows, setNumberOfRows ] = useState(0) //Кол-во строк для загрузки
+  const [ currentComponent, setCurrentComponent ] = useState(`Homepage`) 
+  const [ firstElement, setFirstElement ] = useState(0) //Первый элемент для отображения
+  const [ elAmount ] = useState(50) //Кол-во элементов на странице
+
+  const appStyle = {
+    width: "100%", 
+    minHeight: "100vh",
+    background: "linear-gradient(45deg, #fcff58, #f99191)"
+  }
+
   useEffect(() => {
     axios.get(
       `http://www.filltext.com/?rows=${numberOfRows}&delay=1&id={number|1000}&firstName={firstName}&` + 
@@ -26,7 +33,6 @@ const App = () => {
     })
   }, [numberOfRows])
 
-  useEffect(() => console.log(firstElement), [firstElement])
   const selectColumn = (colName) => {
     let copyData = [...data]
     let order = true 
@@ -40,9 +46,7 @@ const App = () => {
     setData(_.orderBy(copyData, colName, order === true ? "asc" : "desc"))
   }
   return (
-    <div style={{width: "100%", 
-    minHeight: "100vh",
-    background: "linear-gradient(45deg, #fcff58, #f99191)"}}>
+    <div style={appStyle}>
       {(() => {
         switch(currentComponent) {
 
@@ -60,6 +64,7 @@ const App = () => {
               currentCol={currentCol}
               firstElement={firstElement}
               setFirstElement={setFirstElement}
+              elAmount={elAmount}
             />
 
           default:

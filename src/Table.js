@@ -4,18 +4,22 @@ import PropTypes from "prop-types"
 const Table = ({ 
   data, 
   selectColumn, 
-  asc, currentCol, 
+  asc, 
+  currentCol, 
   firstElement, 
-  setFirstElement 
+  setFirstElement,
+  elAmount
 }) => {
-  const elAmount = 50
-
   const isAsc = () => asc ? "▲" : "▼" 
   const isSelect = (colName) => colName + (colName === currentCol ? isAsc() : "")
   const select = (colName) => selectColumn.bind(null, colName)
-  const Next = () => setFirstElement(firstElement + elAmount < data.length ? firstElement + elAmount : firstElement)
-  const Back = () => setFirstElement(firstElement - elAmount > 0 ? firstElement - elAmount : 0)
-  return(
+
+  const Next = () => 
+    setFirstElement(firstElement + elAmount < data.length ? firstElement + elAmount : firstElement)
+  const Back = () => 
+    setFirstElement(firstElement - elAmount > 0 ? firstElement - elAmount : 0)
+
+  return (
     <div>
       <table className="table">
         <thead className="thead-dark">
@@ -28,18 +32,17 @@ const Table = ({
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => {
-            if (index >= firstElement && index < firstElement + elAmount) 
-              return (
-                <tr key={item.id + item.email}>
-                  <td>{item.id}</td>
-                  <td>{item.firstName}</td>
-                  <td>{item.lastName}</td>
-                  <td>{item.email}</td>
-                  <td>{item.phone}</td>
-                </tr>
-              )}
-          )}
+          {data.filter((_el, index) => index >= firstElement && index < firstElement + elAmount)
+            .map((item) => (
+              <tr key={item.id + item.email}>
+                <td>{item.id}</td>
+                <td>{item.firstName}</td>
+                <td>{item.lastName}</td>
+                <td>{item.email}</td>
+                <td>{item.phone}</td>
+              </tr>
+            ))
+          }
         </tbody>
       </table>
       <button onClick={Back.bind(null, null)}>Back</button>
@@ -54,7 +57,8 @@ Table.propTypes = {
   asc: PropTypes.bool.isRequired,
   currentCol: PropTypes.string.isRequired,
   firstElement: PropTypes.number.isRequired,
-  setFirstElement: PropTypes.func.isRequired
+  setFirstElement: PropTypes.func.isRequired,
+  elAmount: PropTypes.number.isRequired
 }
 
 export default Table
