@@ -10,9 +10,9 @@ const App = () => {
   const [ data, setData ] = useState([]) //Данные для отображения
   const [ asc, setAsc ] = useState(true) //Вид сортировки
   const [ currentCol, setCurrentCol ] = useState("id") //Текущая колонка
-  const [ numberOfRows, setNumberOfRows ] = useState(0) //Кол-во строк для загрузки
+  const [ numberOfRows, setNumberOfRows ] = useState() //Кол-во строк для загрузки
   const [ currentComponent, setCurrentComponent ] = useState(`Homepage`) 
-  const [ firstElement, setFirstElement ] = useState(0) //Первый элемент для отображения
+  const [ firstEl, setFirstEl ] = useState(0) //Первый элемент для отображения
   const [ elAmount ] = useState(50) //Кол-во элементов на странице
 
   const appStyle = {
@@ -28,7 +28,7 @@ const App = () => {
       `address={addressObject}&description={lorem|32}`
     ).then((res) => {
       setData(_.orderBy(res.data, "id", "asc"))
-      if (numberOfRows !== 0) 
+      if (numberOfRows > 0) 
         setCurrentComponent(`Table`)
     })
   }, [numberOfRows])
@@ -62,8 +62,8 @@ const App = () => {
               selectColumn={selectColumn} 
               asc={asc}
               currentCol={currentCol}
-              firstElement={firstElement}
-              setFirstElement={setFirstElement}
+              firstEl={firstEl}
+              setFirstEl={setFirstEl}
               elAmount={elAmount}
             />
 

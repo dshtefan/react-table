@@ -6,8 +6,8 @@ const Table = ({
   selectColumn, 
   asc, 
   currentCol, 
-  firstElement, 
-  setFirstElement,
+  firstEl, 
+  setFirstEl,
   elAmount
 }) => {
   const isAsc = () => asc ? "▲" : "▼" 
@@ -15,9 +15,9 @@ const Table = ({
   const select = (colName) => selectColumn.bind(null, colName)
 
   const Next = () => 
-    setFirstElement(firstElement + elAmount < data.length ? firstElement + elAmount : firstElement)
+    setFirstEl(firstEl + elAmount < data.length ? firstEl + elAmount : firstEl)
   const Back = () => 
-    setFirstElement(firstElement - elAmount > 0 ? firstElement - elAmount : 0)
+    setFirstEl(firstEl - elAmount > 0 ? firstEl - elAmount : 0)
 
   return (
     <div>
@@ -32,7 +32,7 @@ const Table = ({
           </tr>
         </thead>
         <tbody>
-          {data.filter((_el, index) => index >= firstElement && index < firstElement + elAmount)
+          {data.filter((_el, index) => index >= firstEl && index < firstEl + elAmount)
             .map((item) => (
               <tr key={item.id + item.email}>
                 <td>{item.id}</td>
@@ -56,8 +56,8 @@ Table.propTypes = {
   selectColumn: PropTypes.func.isRequired,
   asc: PropTypes.bool.isRequired,
   currentCol: PropTypes.string.isRequired,
-  firstElement: PropTypes.number.isRequired,
-  setFirstElement: PropTypes.func.isRequired,
+  firstEl: PropTypes.number.isRequired,
+  setFirstEl: PropTypes.func.isRequired,
   elAmount: PropTypes.number.isRequired
 }
 
