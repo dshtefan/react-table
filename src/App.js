@@ -12,6 +12,7 @@ const App = () => {
   const [ currentCol, setCurrentCol ] = useState("id")
   const [ numberOfRows, setNumberOfRows ] = useState(0)
   const [ currentComponent, setCurrentComponent ] = useState(`Homepage`)
+  const [ firstElement, setFirstElement ] = useState(0)
   
   useEffect(() => {
     axios.get(
@@ -20,12 +21,12 @@ const App = () => {
       `address={addressObject}&description={lorem|32}`
     ).then((res) => {
       setData(_.orderBy(res.data, "id", "asc"))
-      console.log(res.data)
       if (numberOfRows !== 0) 
         setCurrentComponent(`Table`)
     })
   }, [numberOfRows])
 
+  useEffect(() => console.log(firstElement), [firstElement])
   const selectColumn = (colName) => {
     let copyData = [...data]
     let order = true 
@@ -39,21 +40,28 @@ const App = () => {
     setData(_.orderBy(copyData, colName, order === true ? "asc" : "desc"))
   }
   return (
-    <div style={{width: "100%", height: "100%"}}>
+    <div style={{width: "100%", 
+    minHeight: "100vh",
+    background: "linear-gradient(45deg, #fcff58, #f99191)"}}>
       {(() => {
         switch(currentComponent) {
+
           case `Homepage`:
             return <Homepage 
-            setNumberOfRows={setNumberOfRows}
-            setCurrentComponent={setCurrentComponent}
+              setNumberOfRows={setNumberOfRows}
+              setCurrentComponent={setCurrentComponent}
             />
+
           case `Table`:
             return <Table 
               data={data} 
               selectColumn={selectColumn} 
               asc={asc}
               currentCol={currentCol}
+              firstElement={firstElement}
+              setFirstElement={setFirstElement}
             />
+
           default:
               return <Spinner />
         }

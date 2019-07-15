@@ -2,11 +2,6 @@ import React from "react"
 import PropTypes from "prop-types"
 
 const Homepage = ({ setNumberOfRows, setCurrentComponent }) => {
-  const homepageStyle = {
-    width: "100%",
-    minHeight: "100vh",
-    background: "linear-gradient(45deg, #fcff58, #f99191)",
-  }
   const pageStyle = {
     position: "absolute",
     top: "50%",
@@ -30,7 +25,7 @@ const Homepage = ({ setNumberOfRows, setCurrentComponent }) => {
   }
   
   return (
-    <div className="homepage" style={homepageStyle}>
+    <div className="homepage">
       <div className="blocs" style={pageStyle}>
         {[32, 1000].map((number) => 
           <div className="block" key={number} style={blockStyle} onClick={onClick.bind(null, number)}>
